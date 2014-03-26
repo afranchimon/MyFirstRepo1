@@ -38,12 +38,18 @@ namespace GitHub.CommitClient
 
         public static string DownloadString(string url)
         {
-            WebClient client = new WebClient();
-            client.Headers.Add("Accept", "application/vnd.github.v3+json");
-            client.Headers.Add("Authorization", "token e6e767f5016fca526c844c43e0cf316d6f529569");
-            client.Headers.Add("User-Agent", "MyAmazingApp"); 
-            string response = client.DownloadString(url);
-            return response;
+            string result = string.Empty;
+
+            if (!string.IsNullOrEmpty(url))
+            {
+                WebClient client = new WebClient();
+                client.Headers.Add("Accept", "application/vnd.github.v3+json");
+                client.Headers.Add("Authorization", "token e6e767f5016fca526c844c43e0cf316d6f529569");
+                client.Headers.Add("User-Agent", "MyAmazingApp");
+                result = client.DownloadString(url);
+            }
+            
+            return result;
             
         }
     }

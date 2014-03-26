@@ -6,6 +6,8 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using GitHub.CommitClient.Extensions;
+using YouSource.QA.StyleCop;
+using System.IO;
 
 namespace GitHub.CommitClient
 {
@@ -13,18 +15,23 @@ namespace GitHub.CommitClient
     {
         static void Main(string[] args)
         {
-            var url = @"https://api.github.com/repos/afranchimon/MyFirstRepo1/commits/eb5e12f4a6cfa4407e270ca560ed07d1290c49c5";
+            var url = @"https://api.github.com/repos/afranchimon/MyFirstRepo1/commits/86e26fc19eb3c02ac44186bf615c36a8096b96d7";
             var response = DownloadString(url);
 
             Console.WriteLine("Response OK+");
             var commit = JsonDeserializer.Deserialize<Commit>(response);
             Console.WriteLine("Data Deserialized+");
 
-            response = DownloadString(commit.Files.First().ContentUrl);
+            response = DownloadString(commit.Files.Last().ContentUrl);
             var file = JsonDeserializer.Deserialize<ContentFile>(response);
 
+            var fileName = file.Save();
 
-            Console.WriteLine(file.Save()); 
+            var inspector = new StyleInspector(Directory.GetCurrentDirectory(), new string[] { fileName });
+            var violations = inspector.GetViolations();
+            var validator = new CodeAnalyzer(new string[] { fileName });
+            var metricsViolations = validator.GetViolations();
+
 
             Console.ReadLine();
         }

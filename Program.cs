@@ -13,6 +13,7 @@ namespace GitHub.CommitClient
 {
     class Program
     {
+	    [ExcludeFromCodeCoverage]
         static void Main(string[] args)
         {
             var url = @"https://api.github.com/repos/afranchimon/MyFirstRepo1/commits/86e26fc19eb3c02ac44186bf615c36a8096b96d7";
